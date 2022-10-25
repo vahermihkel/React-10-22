@@ -1,0 +1,20 @@
+.main-pilt {
+  width: 200px;
+  height: 100px;
+}
+
+.main-pilt:hover {
+  opacity: 0.7;
+}
+
+.nupp {
+  border-radius: 10px;
+}
+
+.nupp:hover {
+  font-weight: bold;
+}
+
+.main-pilt, .nupp {
+  cursor: pointer;
+}
