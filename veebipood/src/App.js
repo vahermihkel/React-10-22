@@ -3,6 +3,7 @@ import './App.css';
 import Avaleht from './pages/Avaleht';
 import LisaToode from './pages/LisaToode';
 import Ostukorv from './pages/Ostukorv';
+import Seaded from './pages/Seaded';
 
 function App() {
   return (
@@ -16,11 +17,15 @@ function App() {
       <Link to="/lisa-toode">
         <button className="nupp">Lisa toode</button>
       </Link>
+      <Link to="/seaded">
+        <button className="nupp">Seaded</button>
+      </Link>
 
       <Routes>
         <Route path="" element={ <Avaleht /> } />
         <Route path="ostukorv" element={ <Ostukorv /> } />
         <Route path="lisa-toode" element={ <LisaToode /> } />
+        <Route path="seaded" element={ <Seaded /> } />
       </Routes>
 
 
