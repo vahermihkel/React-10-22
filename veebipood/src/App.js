@@ -4,6 +4,7 @@ import Avaleht from './pages/Avaleht';
 import LisaToode from './pages/LisaToode';
 import Meist from './pages/Meist';
 import Ostukorv from './pages/Ostukorv';
+import Poed from './pages/Poed';
 import Seaded from './pages/Seaded';
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
       <Link to="/meist">
         <button className="nupp">Meist</button>
       </Link>
+      <Link to="/poed">
+        <button className="nupp">Poed</button>
+      </Link>
 
       <Routes>
         <Route path="" element={ <Avaleht /> } />
@@ -31,6 +35,7 @@ function App() {
         <Route path="lisa-toode" element={ <LisaToode /> } />
         <Route path="seaded" element={ <Seaded /> } />
         <Route path="meist" element={ <Meist /> } />
+        <Route path="poed" element={ <Poed /> } />
       </Routes>
 
 

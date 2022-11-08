@@ -4,22 +4,6 @@ function Seaded() {              // null  ehk seda võtit ei eksisteeri localSto
   const [keel, uuendaKeel] = useState(localStorage.getItem("keel") || "est");
         // .getItem võtab viimase .setItem-i   -> 
         // kui pole kunagi tehtud .setItem, siis .getItem annab null-i ehk tühjuse
-   
-  const muudaKeelEE = () => {    // function muudaKeel() {}
-    uuendaKeel("est");
-    localStorage.setItem("keel", "est");
-  }         
-  
-  const muudaKeelEN = () => {
-    uuendaKeel("eng");
-    localStorage.setItem("keel", "eng");
-  }
-  
-  const muudaKeelRU = () => {
-    uuendaKeel("rus");
-    localStorage.setItem("keel", "rus");
-  }
-
   const emailViide = useRef(); // emailRef
   const telefonViide = useRef(); // phoneRef
 
@@ -29,6 +13,26 @@ function Seaded() {              // null  ehk seda võtit ei eksisteeri localSto
 
   const uuendaTelefoni = () => {
     localStorage.setItem("telefon", telefonViide.current.value);
+  }
+   
+  // const muudaKeelEE = () => {    // function muudaKeel() {}
+  //   uuendaKeel("est");
+  //   localStorage.setItem("keel", "est");
+  // }         
+  
+  // const muudaKeelEN = () => {
+  //   uuendaKeel("eng");
+  //   localStorage.setItem("keel", "eng");
+  // }
+  
+  // const muudaKeelRU = () => {
+  //   uuendaKeel("rus");
+  //   localStorage.setItem("keel", "rus");
+  // }
+
+  const muudaKeel = (uusKeel) => {
+    uuendaKeel(uusKeel);
+    localStorage.setItem("keel", uusKeel);
   }
   
   return ( 
@@ -43,9 +47,9 @@ function Seaded() {              // null  ehk seda võtit ei eksisteeri localSto
       <br />
 
       <div>-------------------------------</div>
-      <button onClick={muudaKeelEE}>EE</button>
-      <button onClick={muudaKeelEN}>EN</button>
-      <button onClick={muudaKeelRU}>RU</button>
+      <button onClick={() => muudaKeel("est")}>EE</button>
+      <button onClick={() => muudaKeel("eng")}>EN</button>
+      <button onClick={() => muudaKeel("rus")}>RU</button>
       { keel === "est" && <div>Vaatad eesti keelset veebisaiti</div> }
       { keel === "eng" && <div>Vaatad inglise keelset veebisaiti</div> }
       { keel === "rus" && <div>Vaatad vene keelset veebisaiti</div> }
