@@ -40,7 +40,7 @@ function Avaleht() {
 
   function v2henda() {
     // kogus = kogus - 1;    ctrl + ä      edit ---> toggle line comment
-    muudaKogus("dasdasdasd");  
+    muudaKogus(kogus - 1);  
     console.log(kogus);
     muudaSonum("Kogus vähendatud");
   }
