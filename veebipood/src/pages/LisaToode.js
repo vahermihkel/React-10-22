@@ -3,6 +3,9 @@ import { useRef, useState } from "react";
 function LisaToode() {
   const [sonum, muudaSonum] = useState("Lisa uus toode!");
   const nimiRef = useRef();
+  const hindRef = useRef();
+  const piltRef = useRef();
+  const aktiivneRef = useRef();
   // alati kui teen refi, panen ta kuhugi input sisse
   // ja alati kui teen inputi, panen Reactis talle ref sisse
 
@@ -17,7 +20,13 @@ function LisaToode() {
 
       let tooted = localStorage.getItem("tooted");  //  1.  "["Tesla", "Nobe"]"   2.  null
       tooted = JSON.parse(tooted) || [];            //  1.   ["Tesla", "Nobe"]    2.  []
-      tooted.push(nimiRef.current.value);           //  1.["Tesla", "Nobe", "BMW"] 2. ["BMW"]
+      const uusToode = {
+        "nimi": nimiRef.current.value,
+        "hind": hindRef.current.value,
+        "pilt": piltRef.current.value,
+        "aktiivne": aktiivneRef.current.value
+      }
+      tooted.push(uusToode);           //  1.["Tesla", "Nobe", "BMW"] 2. ["BMW"]
       tooted = JSON.stringify(tooted);            //  1."["Tesla", "Nobe", "BMW"]" 2. "["BMW"]"
       localStorage.setItem("tooted", tooted );    //   Key    |    Value
     }                                     //1.      "tooted"  |   "["Tesla", "Nobe", "BMW"]" 
@@ -34,6 +43,12 @@ function LisaToode() {
       <div>{sonum}</div>
       <label>Toote nimi</label> <br />
       <input ref={nimiRef} type="text" /> <br />
+      <label>Toote hind</label> <br />
+      <input ref={hindRef} type="text" /> <br />
+      <label>Toote pilt</label> <br />
+      <input ref={piltRef} type="text" /> <br />
+      <label>Toote aktiivsus</label> <br />
+      <input ref={aktiivneRef} type="text" /> <br />
       <button onClick={() => lisaUusToode()}>Vajuta</button> <br />
     </div>
     );

@@ -48,7 +48,7 @@ function App() {
         <Route path="meist" element={ <Meist /> } />
         <Route path="poed" element={ <Poed /> } />
         <Route path="halda" element={ <HaldaTooteid /> } />
-        <Route path="muuda" element={ <MuudaToode /> } />
+        <Route path="muuda/:index" element={ <MuudaToode /> } />
         <Route path="toode/:j2rjekorraNumber" element={ <YksikToode /> } />
       </Routes>
 

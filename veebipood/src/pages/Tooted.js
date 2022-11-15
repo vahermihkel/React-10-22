@@ -19,9 +19,13 @@ function Tooted() {
   return ( 
     <div>
       {tooted.map((element, index) => 
-        <div key={element}>
+        <div key={index}>
           <Link to={"/toode/" + index}>
-            {element}
+            {/* Objects are not valid as a React child (found: object with keys {nimi, hind, pilt, aktiivne}) */}
+            <img src={element.pilt} alt="" />
+            <div>{element.nimi}</div>
+            <div>{element.hind}</div>
+            <div>{element.aktiivne}</div>
           </Link>
           <button onClick={() => lisaOstukorvi(element)}>Lisa ostukorvi</button>
         </div>)}

@@ -27,7 +27,10 @@ function Ostukorv() {
       <div>Kokku on {ostukorv.length} eset ostukorvis</div>
       {ostukorv.map((element,index) => 
         <div key={index}>
-          {element}
+          <div>{element.nimi}</div>
+          <div>{element.hind}</div>
+          <div>{element.pilt}</div>
+          <div>{element.aktiivne}</div>
           <button onClick={() => kustuta(index)}>x</button>
           <button onClick={() => lisa(element)}>+</button>
         </div>

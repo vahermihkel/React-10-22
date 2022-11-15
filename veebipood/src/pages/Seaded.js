@@ -38,11 +38,11 @@ function Seaded() {              // null  ehk seda võtit ei eksisteeri localSto
   return ( 
     <div>
       <label>Meie e-mail</label>
-      <input ref={emailViide} type="text" />
+      <input defaultValue={localStorage.getItem("email")} ref={emailViide} type="text" />
       <button onClick={uuendaEmaili}>Sisesta</button>
       <br />
       <label>Meie telefon</label>
-      <input ref={telefonViide} type="text" />
+      <input defaultValue={localStorage.getItem("telefon")} ref={telefonViide} type="text" />
       <button onClick={uuendaTelefoni}>Sisesta</button>
       <br />
 

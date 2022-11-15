@@ -11,43 +11,69 @@ function Poed() {
   const [poed, uuendaPoed] = useState(
       poedFailist
     );
+  const poodRef = useRef(); // nimiViide
+  const aegRef = useRef(); // aegViide
 
   const sorteeriAZ = () => {
-    // poed.sort((a,b) => a.localeCompare(b));
-    poed.sort();
+    // stringid: poed.sort((a,b) => a.localeCompare(b));
+    // stringid: poed.sort();
+
+    poed.sort((a,b) => a.nimi.localeCompare(b.nimi));
+
     // console.log(poed);
     uuendaPoed(poed.slice());
   }
 
   const sorteeriZA = () => {
-        // poed.sort((a,b) => b.localeCompare(a));
-    poed.sort();
-    poed.reverse();
+    // stringid:  poed.sort((a,b) => b.localeCompare(a));
+    // stringid: poed.sort();
+    // + poed.reverse();
+
+    poed.sort((a,b) => b.nimi.localeCompare(a.nimi));
+
+    // poed.sort((a,b) => a.nimi.localeCompare(b.nimi));
+    // poed.reverse();
+
+    // poed.sort((a,b) => -1 * a.nimi.localeCompare(b.nimi));
+
     uuendaPoed(poed.slice());
   }
 
   const sorteeriTahtedeJargi = () => {
-    poed.sort((a,b) => a.length - b.length);
+    poed.sort((a,b) => a.nimi.length - b.nimi.length);
     uuendaPoed(poed.slice()); // .slice() ---> koopia tegemiseks (uuendab iseennast iseendaga)
   }
 
   const filtreeriLopuJargi = () => {
-    const tulem = poed.filter( pood => pood.endsWith("mäe") );
+    const tulem = poed.filter( pood => pood.nimi.endsWith("mäe") );
     uuendaPoed(tulem);
   }
 
   const filtreeriIJargi = () => {
-    const tulem = poed.filter( pood => pood.includes("i") || pood.includes("I") || pood.includes("|") );
+    const tulem = poed.filter( pood => pood.nimi.includes("i") || pood.nimi.includes("I") || pood.nimi.includes("|") );
     uuendaPoed(tulem);
   }
 
   const originaalsedTagasi = () => {
-    uuendaPoed(["Lasnamäe", "Kesklinn", "Mustamäe", 
-    "Õismäe", "Kristiine", "Põhja-Tallinn", "Kakumäe", "Isaku"]);
+    uuendaPoed([
+      {"nimi": "Lasnamäe", "aeg": "9-22"}, 
+      {"nimi": "Kesklinn", "aeg": "8-22"}, 
+      {"nimi": "Mustamäe", "aeg": "9-23"}, 
+      {"nimi": "Õismäe", "aeg": "9-21"}, 
+      {"nimi": "Kristiine", "aeg": "10-22"}, 
+      {"nimi": "Põhja-Tallinn", "aeg": "11-00"}, 
+      {"nimi": "Kakumäe", "aeg": "10-17"}, 
+      {"nimi": "Isaku", "aeg": "9-20"}
+  ]);
   }
 
   const muudaIgaYht = () => {
-    const tulem = poed.map(element => "--" + element);
+                      //  "Lasnamäe" => "--" + "Lasnamäe"
+                      //  "Kesklinn" => "--" + "Kesklinn"
+
+                      // {"nimi": "Lasnamäe", "aeg": "9-22"}
+                      // => {"nimi": "--Lasnamäe", "aeg": "9-22"}
+    const tulem = poed.map(element => {return {"nimi": "--" + element.nimi, "aeg": element.aeg}});
     uuendaPoed(tulem);
   }
 
@@ -56,17 +82,17 @@ function Poed() {
     uuendaPoed(poed.slice());
   }
 
-  const poodRef = useRef();
-
   const lisa = () => {
-    poed.push(poodRef.current.value);
+    poed.push({"nimi": poodRef.current.value, "aeg": aegRef.current.value});
     uuendaPoed(poed.slice());
   }
 
   return ( 
     <div>
-      <label>Uue poe nimi</label>
-      <input ref={poodRef} type="text" />
+      <label>Uue poe nimi</label> <br />
+      <input ref={poodRef} type="text" /> <br />
+      <label>Uue poe lahtiolekuaeg</label> <br />
+      <input ref={aegRef} type="text" /> <br />
       <button onClick={lisa}>Lisa uus</button> 
       <br />
       <button onClick={sorteeriAZ}>Sorteeri A-Z</button>
@@ -78,7 +104,7 @@ function Poed() {
       <button onClick={muudaIgaYht}>Pane igaühele -- ette</button>
       {poed.map( (pood,index) => 
         <div key={index}>
-          {pood}
+          {pood.nimi} - {pood.aeg}
           <button onClick={() => kustuta(index)}>x</button>
         </div> )}
       <div>-------------------------------</div>

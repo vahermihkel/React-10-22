@@ -9,6 +9,7 @@ function YksikToode() {
   const leitudToode = tooted[urlParameetrid.j2rjekorraNumber];
   */
 
+  // toode/:j2rjekorraNumber
   const { j2rjekorraNumber } = useParams();
   const leitudToode = tooted[j2rjekorraNumber];
 
@@ -21,7 +22,8 @@ function YksikToode() {
     <div>
       <div>{tooted}</div>
       <div>{j2rjekorraNumber}</div>
-      <div>{leitudToode}</div>
+      { leitudToode !== undefined && <div>{leitudToode}</div>}
+      { leitudToode === undefined && <div>Toodet ei leitud</div>}
     </div> );
 }
 
