@@ -13,16 +13,15 @@ function HaldaTooteid() {
   return ( 
     <div>
       <div>{tooted.map((element,index) => 
-        <div key={index}>
+        <div key={index} className={ element.aktiivne === true ? "aktiivne" : "mittaktiivne" }>
+          <img src={element.pilt} alt="" />
           <div>{element.nimi}</div>
           <div>{element.hind}</div>
-          <div>{element.pilt}</div>
-          <div>{element.aktiivne}</div>
           <button onClick={() => kustutaToode(index)}>x</button>
           <Link to={"/muuda/" + index}>
             <button>Muuda</button>
           </Link>
-          </div>)}
+        </div>)}
       </div>
     </div> );
 }

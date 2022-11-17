@@ -18,3 +18,15 @@
 .main-pilt, .nupp {
   cursor: pointer;
 }
+
+.aktiivne {
+  border: 1px solid green;
+  color: green;
+  background-color: rgb(243, 255, 243);
+}
+
+.mittaktiivne {
+  border: 1px solid red;
+  color: red;
+  background-color: rgb(255, 244, 244);
+}

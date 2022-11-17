@@ -21,20 +21,30 @@ function Ostukorv() {
     localStorage.setItem("ostukorv", JSON.stringify([]));
   }
 
+  const arvutaKogusumma = () => {
+    let summa = 0;
+    ostukorv.forEach(element => summa = summa + element.hind);
+    return summa;
+  }
+
   return ( 
     <div>
-      <button onClick={tyhjenda}>Tühjenda</button>
-      <div>Kokku on {ostukorv.length} eset ostukorvis</div>
+      { ostukorv.length > 0 && <button onClick={tyhjenda}>Tühjenda</button> }
+      { ostukorv.length >= 2 && <div>Kokku on {ostukorv.length} eset ostukorvis</div> }
+      { ostukorv.length === 1 && <div>Kokku on 1 ese ostukorvis</div> }
+      { ostukorv.length === 0 && <div>Ostukorv on tühi</div> }
       {ostukorv.map((element,index) => 
         <div key={index}>
+          <img src={element.pilt} alt="" />
           <div>{element.nimi}</div>
           <div>{element.hind}</div>
-          <div>{element.pilt}</div>
+          {/* <div>{element.pilt}</div> */}
           <div>{element.aktiivne}</div>
           <button onClick={() => kustuta(index)}>x</button>
           <button onClick={() => lisa(element)}>+</button>
         </div>
       )}
+      <div>Kogusumma: {arvutaKogusumma()} €</div>
     </div> );
 }
 
