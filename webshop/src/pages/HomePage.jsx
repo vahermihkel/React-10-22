@@ -2,6 +2,7 @@ import productsFromFile from "../data/products.json";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from 'react-i18next';
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 function HomePage() {
   const { t } = useTranslation();
@@ -28,6 +29,10 @@ function HomePage() {
     }
     cartLS = JSON.stringify(cartLS);
     sessionStorage.setItem("cart", cartLS);
+    toast.success(t("added-to-cart"), {
+      "position": "bottom-right",
+      "theme": "dark"
+    });
   }
 
   const sortAZ = () => {
@@ -69,7 +74,7 @@ function HomePage() {
       <button onClick={sortPriceDesc}>Sorteeri hind kahanevalt</button>
       <div>{productsFromFile.length}</div>
       {/* kategooriad peavad siia tulema dünaamiliselt (.map() abil) */}
-      { categories.map((element, i) => <button key={i} onClick={() => filterByCategory (element)} >{element}</button>) }
+      { categories.map((element, i) => <button key={i} onClick={() => filterByCategory (element)} >{t(element)}</button>) }
       {/* <button>motorcycles</button>
       <button>motors</button> */}
       {products.map(element => 
@@ -79,6 +84,7 @@ function HomePage() {
           <div>{element.price}</div>
           <Button onClick={() =>addToCart(element)} >{t("add-to-cart")}</Button>
         </div>)}
+      <ToastContainer />
     </div> );
 }
 

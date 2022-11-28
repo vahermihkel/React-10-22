@@ -1,0 +1,55 @@
+.product {
+  display: flex; /* vasakult-paremale */
+  justify-content: space-between; /* tühjuse ruumijaotus */
+  margin: 0 10%;
+  border-bottom: 1px solid lightgray;
+  padding: 10px 0;
+  /* margin: 10% <- igas suunas
+  margin: 10% 10px;   üles-alla 10% lehest ja v-p 10px */
+}
+
+.image {
+  width: 100px;
+  height: 100px;
+}
+
+.name {
+  width: 200px;
+}
+
+.price {
+  width: 80px;
+}
+
+.quantity {
+  width: 110px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sum {
+  width: 100px;
+}
+
+.button {
+  width: 30px;
+  height: 30px;
+}
+
+.button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.button:active {
+  padding: 1px;
+}
+
+.cart-top {
+  margin-left: 10%;
+}
+
+.cart-bottom {
+  text-align: right;
+  margin-right: 10%;
+}
