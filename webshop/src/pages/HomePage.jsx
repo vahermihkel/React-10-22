@@ -1,30 +1,50 @@
 import productsFromFile from "../data/products.json";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from 'react-i18next';
+import { useState } from "react";
 
 function HomePage() {
   const { t } = useTranslation();
+  const [products, changeProducts] = useState(productsFromFile) || [];
 
-  const addToCart = () => {
-      // pange localStorage-sse nagu eesti keelsel
-      let cartLS = localStorage.getItem("cart");
+  const addToCart = (product) => {
+    let cartLS = sessionStorage.getItem("cart");
+    cartLS = JSON.parse(cartLS) || [];
+    cartLS.push(product);
+    cartLS = JSON.stringify(cartLS);
+    sessionStorage.setItem("cart", cartLS);
   }
 
   const sortAZ = () => {
-    // vaja teha: useState, mis võtab algväärtuse productsFromFile-st
-    // järgmiseks sorteerida
-    // ja siis useState funktsiooni abil väärtusi siin lehel muuta
-
-    // tavaline sort ei tööta, peab kasutama (a,b) =>
+    products.sort((b,a) => b.name.localeCompare(a.name));
+    changeProducts(products.slice());
   }
   
-  const sortZA = () => {}
+  const sortZA = () => {
+    products.sort((a,b) => b.name.localeCompare(a.name));
+    changeProducts(products.slice());
+  }
 
-  const sortPriceAsc = () => {}
+  const sortPriceAsc = () => {
+    products.sort((a,b) => a.price - b.price);
+    changeProducts(products.slice());
+  }
 
-  const sortPriceDesc = () => {}
+  const sortPriceDesc = () => {
+    products.sort((a,b) => b.price - a.price);
+    changeProducts(products.slice());
+  }
 
-  const filterByCategory = () => {}
+  const filterByCategory = (i) => {
+    const outcome = productsFromFile.filter(element => element.category === i);
+
+    // const outcome = productsFromFile.filter(element => element.category.match (i));
+    // const outcome = productsFromFile.filter(element => element.category.includes (i));
+    changeProducts(outcome);
+    // return
+  };
+
+  const categories = [...new Set (productsFromFile.map(element => element.category))];
 
   return ( 
     <div>
@@ -34,14 +54,15 @@ function HomePage() {
       <button onClick={sortPriceDesc}>Sorteeri hind kahanevalt</button>
       <div>{productsFromFile.length}</div>
       {/* kategooriad peavad siia tulema dünaamiliselt (.map() abil) */}
-      <button>motorcycles</button>
-      <button>motors</button>
+      { categories.map((element, i) => <button key={i} onClick={() => filterByCategory (element)} >{element}</button>) }
+      {/* <button>motorcycles</button>
+      <button>motors</button> */}
       {productsFromFile.map(element => 
         <div>
           <img src={element.image} alt="" />
           <div>{element.name}</div>
           <div>{element.price}</div>
-          <Button>{t("add-cart-button")}</Button>
+          <Button onClick={() =>addToCart(element)} >{t("add-to-cart")}</Button>
         </div>)}
     </div> );
 }
