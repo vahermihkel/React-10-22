@@ -7,10 +7,25 @@ function HomePage() {
   const { t } = useTranslation();
   const [products, changeProducts] = useState(productsFromFile) || [];
 
-  const addToCart = (product) => {
+
+  // VANA: [{id: 1, name: "Nobe", price: 12, ...}, {id: 1, name: "Nobe", price: 12, ...}, {id: 1, name: "Nobe", price: 12, ...}]
+  // UUS: [{"product": {id: 1, name: "Nobe", price: 12, ...}, "quantity": 2}]
+  // VANA: [toode1, toode1, toode1, toode2, toode2, toode2, toode2, toode2, toode2]
+  // UUS: [{"product": toode1, "quantity": 3}, {"product": toode2, "quantity": 6}]
+  //            {id: 1, name: "Nobe", price: 12, ...}
+  const addToCart = (productClicked) => {
     let cartLS = sessionStorage.getItem("cart");
     cartLS = JSON.parse(cartLS) || [];
-    cartLS.push(product);
+    // kui ei leita üles ja ma otsin tema järjekorranumbrit, siis tulem on -1
+    const index = cartLS.findIndex( element => element.product.id === productClicked.id );
+    if (index >= 0) {
+      // tooted[3] = "Midagi_muud";
+      // kogus = kogus + 1; <--- muutis küll, aga ei muutnud HTMLi
+      // muudaKogus(kogus + 1); <--- muutis HTMLi
+      cartLS[index].quantity = cartLS[index].quantity + 1;
+    } else {
+      cartLS.push({"product": productClicked, "quantity": 1});
+    }
     cartLS = JSON.stringify(cartLS);
     sessionStorage.setItem("cart", cartLS);
   }
@@ -57,7 +72,7 @@ function HomePage() {
       { categories.map((element, i) => <button key={i} onClick={() => filterByCategory (element)} >{element}</button>) }
       {/* <button>motorcycles</button>
       <button>motors</button> */}
-      {productsFromFile.map(element => 
+      {products.map(element => 
         <div>
           <img src={element.image} alt="" />
           <div>{element.name}</div>
