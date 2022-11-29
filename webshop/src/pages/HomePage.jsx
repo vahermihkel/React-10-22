@@ -89,3 +89,25 @@ function HomePage() {
 }
 
 export default HomePage;
+
+// Email saatmine++++++
+
+// Neljapäev:
+// Kaardirakendus, kus on kõik poed peal
+// ID unikaalsuse kontroll
+// Pakiautomaadid Ostukorvi vaatesse -> API päringud
+
+// Firebase-i üles + andmebaas -> API päringud
+// Makse -> API päringud
+
+// Props -> väljatõstmised
+
+// Globaalne muutuja: ülemises menüüs Ostukorvi kogusumma
+// Globaalne muutuja: sisselogimine/registreerumine
+
+// Nortali proovitöö (katab koos tehtud teemasid)
+
+// Piltide üleslaadimine (praegu on URL-na) - Firebase-i
+// Karusell-galerii
+// Wordpress backendina ja React frontendina
+// Kujundus???

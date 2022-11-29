@@ -3,10 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import productsFromFile from "../../data/products.json";
 
 function EditProduct() {
-  const { id } = useParams();                     //    35422021   ===   "35422021"
+  const { id } = useParams();                     //    35422021   ===   35422021
   const productFound = productsFromFile.find(element => element.id === Number(id));
   const index = productsFromFile.indexOf(productFound);
-  const navigate = useNavigate(); // import
+  const navigate = useNavigate(); 
 
   const idRef = useRef();
   const nameRef = useRef();
@@ -18,13 +18,13 @@ function EditProduct() {
 
   const changeProduct = () => {
     const updatedProduct = {
-      "id": idRef.current.value,
-      "name": nameRef.current.value,
-      "price": priceRef.current.value,
-      "image": imageRef.current.value,
-      "category": categoryRef.current.value,
-      "description": descriptionRef.current.value,
-      "active": activeRef.current.value,
+      "id": Number(idRef.current.value), //  1312312312
+      "name": nameRef.current.value, // "dasdsadasd"
+      "price": Number(priceRef.current.value), // 3123123
+      "image": imageRef.current.value, // "dadasda"
+      "category": categoryRef.current.value, // "asdasda"
+      "description": descriptionRef.current.value, // "adasfasd"
+      "active": activeRef.current.checked,  // false
     }
     productsFromFile[index] = updatedProduct;
     navigate("/admin/maintain-products");
@@ -34,11 +34,11 @@ function EditProduct() {
   <div>
     { productFound !== undefined && <div>
       <label>ID</label> <br />
-      <input ref={idRef} defaultValue={productFound.id} type="text" /> <br />
+      <input ref={idRef} defaultValue={productFound.id} type="number" /> <br />
       <label>Nimi</label> <br />
       <input ref={nameRef} defaultValue={productFound.name} type="text" /> <br />
       <label>Hind</label> <br />
-      <input ref={priceRef} defaultValue={productFound.price} type="text" /> <br />
+      <input ref={priceRef} defaultValue={productFound.price} type="number" /> <br />
       <label>Pilt</label> <br />
       <input ref={imageRef} defaultValue={productFound.image} type="text" /> <br />
       <label>Kategooria</label> <br />
@@ -46,7 +46,7 @@ function EditProduct() {
       <label>Kirjeldus</label> <br />
       <input ref={descriptionRef} defaultValue={productFound.description} type="text" /> <br />
       <label>Aktiivne</label> <br />
-      <input ref={activeRef} defaultValue={productFound.active} type="text" /> <br />
+      <input ref={activeRef} defaultChecked={productFound.active} type="checkbox" /> <br />
       <button onClick={changeProduct}>Muuda</button>
     </div>}
     { productFound === undefined && <div>
