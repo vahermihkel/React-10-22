@@ -1,11 +1,12 @@
 import { useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import productsFromFile from "../../data/products.json";
 
 function EditProduct() {
   const { id } = useParams();                     //    35422021   ===   "35422021"
   const productFound = productsFromFile.find(element => element.id === Number(id));
   const index = productsFromFile.indexOf(productFound);
+  const navigate = useNavigate(); // import
 
   const idRef = useRef();
   const nameRef = useRef();
@@ -26,6 +27,7 @@ function EditProduct() {
       "active": activeRef.current.value,
     }
     productsFromFile[index] = updatedProduct;
+    navigate("/admin/maintain-products");
   }
 
   return ( 
