@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../css/Cart.css";
 
 function Cart() {
   const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem("cart")) || []);
-    
+  const [parcelMachines, setParcelMachines] = useState([]);
+
   const removeFromCart = (index) => {
     cart.splice(index, 1);
     setCart(cart.slice()); // HTML uuendus
@@ -36,6 +37,12 @@ function Cart() {
     setCart(cart.slice()); // HTML uuendus
     sessionStorage.setItem("cart", JSON.stringify(cart)); // sessionStorage uuendus
   }
+  
+  useEffect(() => { // useEffect tuleb panna siis, kui lehele tulles tehakse koheselt API päring fetch() abil
+    fetch("https://www.omniva.ee/locations.json")
+      .then(res => res.json())
+      .then(json => setParcelMachines(json));
+  }, []);
 
   return ( 
     <div>
@@ -67,6 +74,11 @@ function Cart() {
         </div>
         <div className="cart-bottom">
           { cart.length > 0 && <div>Estimated total price {calculateCartSum()} €</div>}
+        
+        <div>
+          { parcelMachines.map(element => <div>{element.NAME}</div>) }
+        </div>
+        
         </div>
     </div> );
 }

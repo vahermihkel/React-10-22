@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import productsFromFile from '../../data/products.json';
@@ -15,6 +15,7 @@ function AddProduct() {
     const activeRef = useRef();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [idUnique, setIdUnique] = useState(true);
 
     const addNewProduct = () => {
         const newProduct = {
@@ -36,10 +37,20 @@ function AddProduct() {
         navigate("/admin/maintain-products");
     }
 
+  const checkIdUniqueness = () => {
+    const found = productsFromFile.find(element => element.id === Number(idRef.current.value) );
+    if (found === undefined) {
+      setIdUnique(true);
+    } else {
+      setIdUnique(false);
+    }
+  }
+
     return ( 
         <div>
+            { idUnique === false  && <div>Sisestatud ID on mõne teisega tootega sama!</div>}
             <label>{t("product_id")}</label><br />
-            <input ref={idRef} type="number" />
+            <input ref={idRef} onChange={checkIdUniqueness} type="number" />
             <br /><br />
             <label>{t("product_name")}</label><br />
             <input ref={nameRef} type="text" />
@@ -59,7 +70,7 @@ function AddProduct() {
             <label>{t("product_active")}</label><br />
             <input ref={activeRef} type="checkbox" />
             <br /><br />
-            <Button onClick={addNewProduct}>{t("add_new_product")}</Button>
+            <Button disabled={ idUnique === false } onClick={addNewProduct}>{t("add_new_product")}</Button>
         </div>
     );
 }

@@ -16,6 +16,8 @@ function EditProduct() {
   const descriptionRef = useRef();
   const activeRef = useRef();
 
+  const [idUnique, setIdUnique] = useState(true);
+
   const changeProduct = () => {
     const updatedProduct = {
       "id": Number(idRef.current.value), //  1312312312
@@ -36,8 +38,6 @@ function EditProduct() {
   // onClick={} <- pealevajutades paneb funktsiooni käima
   // onChange={} <- inputi sees muutuse korral paneb funktsiooni käima
   // .find() <- JavaScripti funktsionaalsus, mille abil leian üles
-
-  const [idUnique, setIdUnique] = useState(true);
 
   const checkIdUniqueness = () => {     //         35422021   ===   "35422021" -> 35422021
     if (id === idRef.current.value) {
