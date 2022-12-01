@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import { useTranslation } from 'react-i18next';
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const { t } = useTranslation();
@@ -79,7 +80,9 @@ function HomePage() {
       <button>motors</button> */}
       {products.map(element => 
         <div>
-          <img src={element.image} alt="" />
+          <Link to={"/product/" + element.id}>
+            <img src={element.image} width="200px" alt={element.name} />
+          </Link>
           <div>{element.name}</div>
           <div>{element.price}</div>
           <Button onClick={() =>addToCart(element)} >{t("add-to-cart")}</Button>

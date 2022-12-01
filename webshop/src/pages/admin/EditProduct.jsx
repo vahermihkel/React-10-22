@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import productsFromFile from "../../data/products.json";
 
@@ -27,14 +27,44 @@ function EditProduct() {
       "active": activeRef.current.checked,  // false
     }
     productsFromFile[index] = updatedProduct;
+    // console.log(productsFromFile);
+    // console.log(index);
+    // console.log(updatedProduct);
     navigate("/admin/maintain-products");
+  }
+
+  // onClick={} <- pealevajutades paneb funktsiooni käima
+  // onChange={} <- inputi sees muutuse korral paneb funktsiooni käima
+  // .find() <- JavaScripti funktsionaalsus, mille abil leian üles
+
+  const [idUnique, setIdUnique] = useState(true);
+
+  const checkIdUniqueness = () => {     //         35422021   ===   "35422021" -> 35422021
+    if (id === idRef.current.value) {
+      setIdUnique(true);
+      return; // <------ ära mine siit edasi selle funktsiooni sees
+    }
+    const found = productsFromFile.find(element => element.id === Number(idRef.current.value) );
+    if (found === undefined) {
+      setIdUnique(true);
+    } else {
+      setIdUnique(false);
+    }
+
+    // const result = productsFromFile.filter(element => element.id === Number(idRef.current.value) );
+    // if (result.length === 0) {
+    //   setIdUnique(true);
+    // } else {
+    //   setIdUnique(false);
+    // }
   }
 
   return ( 
   <div>
     { productFound !== undefined && <div>
+      { idUnique === false  && <div>Sisestatud ID on mõne teisega tootega sama!</div>}
       <label>ID</label> <br />
-      <input ref={idRef} defaultValue={productFound.id} type="number" /> <br />
+      <input ref={idRef} onChange={checkIdUniqueness} defaultValue={productFound.id} type="number" /> <br />
       <label>Nimi</label> <br />
       <input ref={nameRef} defaultValue={productFound.name} type="text" /> <br />
       <label>Hind</label> <br />
@@ -47,13 +77,25 @@ function EditProduct() {
       <input ref={descriptionRef} defaultValue={productFound.description} type="text" /> <br />
       <label>Aktiivne</label> <br />
       <input ref={activeRef} defaultChecked={productFound.active} type="checkbox" /> <br />
-      <button onClick={changeProduct}>Muuda</button>
+      <button disabled={ idUnique === false } onClick={changeProduct}>Muuda</button>
     </div>}
     { productFound === undefined && <div>
       Toodet ei leitud
     </div>}
   </div> );
 }
+
+// 10 liikmeline tiim
+// 5x arendaja -> kirjutab koodi. aasta = tuhande esimene number
+// 2x testija -> testivad arendajate kirjutatud koodi (klient tahab alati vigadevaba asja)
+//                 kas numbrite juurde saab tähti lisada, kustutab/muudab localStorage-st
+//                  proovib kirillitsat sisestada, muudab ajavööndeid, makse ajal paneb keskelt kinni
+//                erinevad valuutad, erinevad keeled   
+// 2x tiimijuht/analüütik -> kes jagavad arendajatele ülesandeid, kliendiga arutlus mida nad vajavad
+//              hinnapakkumised, vb üritused
+// 1x disainer -> joonistab programmis valmis millist kujundust kuhugi teha. 
+//              joonistab kliendile valmis -> klient ütleb muudatused -> joonistab -> muudatused   10x odavam
+//              programm (Figma) annab ka värvikoodid
 
 export default EditProduct;
 
