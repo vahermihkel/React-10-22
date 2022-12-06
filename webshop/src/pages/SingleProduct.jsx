@@ -1,11 +1,21 @@
 import { useParams } from 'react-router-dom';
-import productsFromFile from '../data/products.json';
+import { useEffect, useState } from 'react';
+// import productsFromFile from '../data/products.json';
 import { useTranslation } from 'react-i18next';
 
 function SingleProduct() {
+    const [dbProducts, setDbProducts] = useState([]);
     const { id } = useParams();
-    const productClicked = productsFromFile.find(element => element.id === Number(id));
+    const productClicked = dbProducts.find(element => element.id === Number(id));
     const { t } = useTranslation();
+
+    const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
+
+    useEffect(() => {
+        fetch(dbUrl)
+        .then(res => res.json())
+        .then(json => setDbProducts(json));
+    }, []);
 
     return ( 
         <div>

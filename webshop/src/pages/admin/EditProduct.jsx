@@ -1,11 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import productsFromFile from "../../data/products.json";
+// import productsFromFile from "../../data/products.json";
 
 function EditProduct() {
+  const [dbProducts, setDbProducts] = useState([]);
   const { id } = useParams();                     //    35422021   ===   35422021
-  const productFound = productsFromFile.find(element => element.id === Number(id));
-  const index = productsFromFile.indexOf(productFound);
+  const productFound = dbProducts.find(element => element.id === Number(id));
+  const index = dbProducts.indexOf(productFound);
   const navigate = useNavigate(); 
 
   const idRef = useRef();
@@ -17,6 +18,13 @@ function EditProduct() {
   const activeRef = useRef();
 
   const [idUnique, setIdUnique] = useState(true);
+  const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
+
+  useEffect(() => {
+    fetch(dbUrl)
+      .then(res => res.json())
+      .then(json => setDbProducts(json));
+  }, []);
 
   const changeProduct = () => {
     const updatedProduct = {
@@ -28,11 +36,19 @@ function EditProduct() {
       "description": descriptionRef.current.value, // "adasfasd"
       "active": activeRef.current.checked,  // false
     }
-    productsFromFile[index] = updatedProduct;
+    dbProducts[index] = updatedProduct;
+    fetch(dbUrl, 
+      {
+        "method": "PUT", 
+        "body": JSON.stringify(dbProducts)
+      }
+      ).then(() => navigate("/admin/maintain-products"));
+    // API PÄRINGU KAUDU TULEN MUUTMA
+    
     // console.log(productsFromFile);
     // console.log(index);
     // console.log(updatedProduct);
-    navigate("/admin/maintain-products");
+    // navigate("/admin/maintain-products");
   }
 
   // onClick={} <- pealevajutades paneb funktsiooni käima
@@ -44,7 +60,7 @@ function EditProduct() {
       setIdUnique(true);
       return; // <------ ära mine siit edasi selle funktsiooni sees
     }
-    const found = productsFromFile.find(element => element.id === Number(idRef.current.value) );
+    const found = dbProducts.find(element => element.id === Number(idRef.current.value) );
     if (found === undefined) {
       setIdUnique(true);
     } else {

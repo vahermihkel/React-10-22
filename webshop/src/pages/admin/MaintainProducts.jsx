@@ -1,18 +1,44 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import productsFromFile from "../../data/products.json";
+// import productsFromFile from "../../data/products.json";
+import { ToastContainer, toast } from 'react-toastify';
 
 function MaintainProducts() {
-  const [products, setProducts] = useState(productsFromFile);
+  const [products, setProducts] = useState([]);
   const searchedProduct = useRef();
+  const [dbProducts, setDbProducts] = useState([]); // originaalsed andmebaasi tooted, mida ma ei muuda kunagi
+  const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
 
-  const deleteProduct = (i) => {
-    productsFromFile.splice(i,1);
-    setProducts(productsFromFile.slice());
+  useEffect(() => {
+    fetch(dbUrl)
+      .then(res => res.json())
+      .then(json => {
+        setProducts(json);
+        setDbProducts(json);
+      });
+  }, []);
+
+  const deleteProduct = (product) => {
+    const dbIndex = dbProducts.findIndex(element => element.id === product.id);
+    dbProducts.splice(dbIndex,1); // 120 toodet  0,1,2,3,4,5,6,7,8,9,.....,110,111,...119
+    const index = products.findIndex(element => element.id === product.id);
+    products.splice(index,1); // 10 toodet 0,1,2,3,4,5,6,7,8,9
+    setProducts(products.slice());
+    fetch(dbUrl, 
+      {
+        "method": "PUT", 
+        "body": JSON.stringify(dbProducts)
+      }
+      ).then(() => 
+        toast.success("Edukalt toode kustutatud", {
+          "position": "bottom-right",
+          "theme": "dark"
+        })
+        );
   }
 
   const searchFromProducts = () => {
-    const result = productsFromFile.filter(element => element.name.includes(searchedProduct.current.value));
+    const result = dbProducts.filter(element => element.name.includes(searchedProduct.current.value));
     setProducts(result);
   }
 
@@ -30,11 +56,12 @@ function MaintainProducts() {
           <div>{element.category}</div>
           <div>{element.description}</div>
           <div>{element.active}</div>
-          <button onClick={() => deleteProduct(index)}>x</button>
+          <button onClick={() => deleteProduct(element)}>x</button>
           <Link to={"/admin/edit-product/" + element.id}>
             <button>Muuda</button>
           </Link>
         </div>)}
+        <ToastContainer />
     </div> );
 }
 

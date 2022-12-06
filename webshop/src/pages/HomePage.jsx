@@ -1,13 +1,24 @@
-import productsFromFile from "../data/products.json";
+// import productsFromFile from "../data/products.json";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from 'react-i18next';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 
 function HomePage() {
   const { t } = useTranslation();
-  const [products, changeProducts] = useState(productsFromFile) || [];
+  const [products, changeProducts] = useState([]); // mida näidatakse välja
+  const [dbProducts, setDbProducts] = useState([]); // originaalsed andmebaasi tooted, mida ma ei muuda kunagi
+  const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
+
+  useEffect(() => {
+    fetch(dbUrl)
+      .then(res => res.json())
+      .then(json => {
+        changeProducts(json);
+        setDbProducts(json);
+      });
+  }, []);
 
 
   // VANA: [{id: 1, name: "Nobe", price: 12, ...}, {id: 1, name: "Nobe", price: 12, ...}, {id: 1, name: "Nobe", price: 12, ...}]
@@ -57,7 +68,7 @@ function HomePage() {
   }
 
   const filterByCategory = (i) => {
-    const outcome = productsFromFile.filter(element => element.category === i);
+    const outcome = dbProducts.filter(element => element.category === i);
 
     // const outcome = productsFromFile.filter(element => element.category.match (i));
     // const outcome = productsFromFile.filter(element => element.category.includes (i));
@@ -65,7 +76,7 @@ function HomePage() {
     // return
   };
 
-  const categories = [...new Set (productsFromFile.map(element => element.category))];
+  const categories = [...new Set (dbProducts.map(element => element.category))];
 
   return ( 
     <div>
@@ -73,7 +84,7 @@ function HomePage() {
       <button onClick={sortZA}>Sorteeri Z-A</button>
       <button onClick={sortPriceAsc}>Sorteeri hind kasvavalt</button>
       <button onClick={sortPriceDesc}>Sorteeri hind kahanevalt</button>
-      <div>{productsFromFile.length}</div>
+      <div>{products.length}</div>
       {/* kategooriad peavad siia tulema dünaamiliselt (.map() abil) */}
       { categories.map((element, i) => <button key={i} onClick={() => filterByCategory (element)} >{t(element)}</button>) }
       {/* <button>motorcycles</button>
@@ -100,8 +111,15 @@ export default HomePage;
 // ID unikaalsuse kontroll
 // Pakiautomaadid Ostukorvi vaatesse -> API päringud
 
+// Teisipäev:
 // Firebase-i üles + andmebaas -> API päringud
+
+// Neljapäev:
+// Kategooriad üles Firebase-i ja Poed Firebase-i
+// Dünaamiline CSS        className={ true ? "see-class-true-korral" : "false-korral-css" }
 // Makse -> API päringud
+
+// Dark-mode
 
 // Props -> väljatõstmised
 
@@ -114,3 +132,7 @@ export default HomePage;
 // Karusell-galerii
 // Wordpress backendina ja React frontendina
 // Kujundus???
+
+// Lõpuprojekt: Nõue, et oleks tehtud Reactis.
+// Võib olla täiesti tavaline HTML ja CSS Reactis (nt enda portfoolio leht)
+// Võib olla ka Youtube-st või Udemyst mõne õpetuse järgi tehtud projekt

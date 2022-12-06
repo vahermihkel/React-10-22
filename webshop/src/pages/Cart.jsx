@@ -5,6 +5,12 @@ function Cart() {
   const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem("cart")) || []);
   const [parcelMachines, setParcelMachines] = useState([]);
 
+  useEffect(() => { // useEffect tuleb panna siis, kui lehele tulles tehakse koheselt API päring fetch() abil
+    fetch("https://www.omniva.ee/locations.json")   // API päring võtab aega 0.1s - 2s
+      .then(res => res.json())
+      .then(json => setParcelMachines(json));
+  }, []);
+  
   const removeFromCart = (index) => {
     cart.splice(index, 1);
     setCart(cart.slice()); // HTML uuendus
@@ -37,12 +43,6 @@ function Cart() {
     setCart(cart.slice()); // HTML uuendus
     sessionStorage.setItem("cart", JSON.stringify(cart)); // sessionStorage uuendus
   }
-  
-  useEffect(() => { // useEffect tuleb panna siis, kui lehele tulles tehakse koheselt API päring fetch() abil
-    fetch("https://www.omniva.ee/locations.json")
-      .then(res => res.json())
-      .then(json => setParcelMachines(json));
-  }, []);
 
   return ( 
     <div>
@@ -75,9 +75,11 @@ function Cart() {
         <div className="cart-bottom">
           { cart.length > 0 && <div>Estimated total price {calculateCartSum()} €</div>}
         
-        <div>
-          { parcelMachines.map(element => <div>{element.NAME}</div>) }
-        </div>
+        <select>
+          { parcelMachines
+            .filter(element => element.A0_NAME === "EE")
+            .map(element => <option>{element.NAME}</option>) }
+        </select>
         
         </div>
     </div> );
