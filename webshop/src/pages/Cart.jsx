@@ -10,22 +10,10 @@ function Cart() {
       .then(res => res.json())
       .then(json => setParcelMachines(json));
   }, []);
-  
-  const removeFromCart = (index) => {
-    cart.splice(index, 1);
-    setCart(cart.slice()); // HTML uuendus
-    sessionStorage.setItem("cart", JSON.stringify(cart)); // SessionStorage uuendus
-  };
 
   const emptyCart = () => {
     setCart([]);
     sessionStorage.setItem("cart", JSON.stringify([]));
-  };
-
-  const calculateCartSum = () => {
-    let sum = 0;
-    cart.forEach(element => sum = sum + element.product.price * element.quantity);
-    return sum.toFixed(2);
   };
 
   const decreaseQuantity = (index) => {
@@ -42,6 +30,44 @@ function Cart() {
     cart[index].quantity = cart[index].quantity + 1;
     setCart(cart.slice()); // HTML uuendus
     sessionStorage.setItem("cart", JSON.stringify(cart)); // sessionStorage uuendus
+  }
+
+  const removeFromCart = (index) => {
+    cart.splice(index, 1);
+    setCart(cart.slice()); // HTML uuendus
+    sessionStorage.setItem("cart", JSON.stringify(cart)); // SessionStorage uuendus
+  };
+
+  const calculateCartSum = () => {
+    let sum = 0;
+    cart.forEach(element => sum = sum + element.product.price * element.quantity);
+    return sum.toFixed(2);
+  };
+
+  const pay = () => {
+    const paymentUrl = "https://igw-demo.every-pay.com/api/v4/payments/oneoff";
+
+    const paymentData = {
+      "api_username": "92ddcfab96e34a5f",
+      "account_name": "EUR3D1",
+      "amount": calculateCartSum(),
+      "order_reference": Math.random()*9999999,
+      "nonce": "a9b7f7eaasd" + Math.random()*9999999 + new Date(),
+      "timestamp": new Date(),
+      "customer_url": "https://react-mihkel-10-22.web.app"
+      };
+
+    const headersData = {
+      "Authorization": "Basic OTJkZGNmYWI5NmUzNGE1Zjo4Y2QxOWU5OWU5YzJjMjA4ZWU1NjNhYmY3ZDBlNGRhZA==",
+      "Content-Type": "application/json"
+    };
+
+    fetch(paymentUrl, {
+      "method": "POST", 
+      "body": JSON.stringify(paymentData), 
+      "headers": headersData
+    }).then(res => res.json())
+    .then(json => window.location.href = json.payment_link)
   }
 
   return ( 
@@ -78,8 +104,10 @@ function Cart() {
         <select>
           { parcelMachines
             .filter(element => element.A0_NAME === "EE")
-            .map(element => <option>{element.NAME}</option>) }
+            .map(element => <option key={element.NAME}>{element.NAME}</option>) }
         </select>
+
+        <button onClick={pay}>Maksma</button>
         
         </div>
     </div> );

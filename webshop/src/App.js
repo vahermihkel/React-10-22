@@ -15,7 +15,7 @@ import MaintainShops from "./pages/admin/MaintainShops";
 import { useTranslation } from 'react-i18next';
 // import { ContactUs } from './pages/ContactUs';
 import ContactUs from './pages/ContactUs';
-
+import MaintainCategories from './pages/admin/MaintainCategories';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -27,7 +27,6 @@ function App() {
 
   return (
     <div className="App">
-
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand as={Link} to="/">Webshop</Navbar.Brand>
@@ -41,7 +40,6 @@ function App() {
           <img className="lang" src="/uk.png" alt="" onClick={() => changeLang("en")} />
         </Container>
       </Navbar>
-      
     
       <Routes>
         <Route path="" element={ <HomePage /> } />
@@ -53,6 +51,7 @@ function App() {
         <Route path="admin/add-product" element={ <AddProduct /> } />
         <Route path="admin/edit-product/:id" element={ <EditProduct /> } />
         <Route path="admin/maintain-products" element={ <MaintainProducts /> } />
+        <Route path="admin/maintain-categories" element={ <MaintainCategories /> } />
         <Route path="admin/maintain-shops" element={ <MaintainShops /> } />
       </Routes>
     </div>

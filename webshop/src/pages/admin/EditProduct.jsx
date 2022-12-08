@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import productsFromFile from "../../data/products.json";
+import config from "../../data/config.json";
 
 function EditProduct() {
   const [dbProducts, setDbProducts] = useState([]);
@@ -18,10 +18,14 @@ function EditProduct() {
   const activeRef = useRef();
 
   const [idUnique, setIdUnique] = useState(true);
-  const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch(dbUrl)
+    fetch(config.categoriesDbUrl)
+        .then(res => res.json())
+        .then(json => setCategories(json));
+
+    fetch(config.productsDbUrl)
       .then(res => res.json())
       .then(json => setDbProducts(json));
   }, []);
@@ -37,7 +41,7 @@ function EditProduct() {
       "active": activeRef.current.checked,  // false
     }
     dbProducts[index] = updatedProduct;
-    fetch(dbUrl, 
+    fetch(config.productsDbUrl, 
       {
         "method": "PUT", 
         "body": JSON.stringify(dbProducts)
@@ -88,7 +92,10 @@ function EditProduct() {
       <label>Pilt</label> <br />
       <input ref={imageRef} defaultValue={productFound.image} type="text" /> <br />
       <label>Kategooria</label> <br />
-      <input ref={categoryRef} defaultValue={productFound.category} type="text" /> <br />
+      {/* <input ref={categoryRef} type="text" /> <br /> */}
+      <select ref={categoryRef} defaultValue={productFound.category}>
+        {categories.map(element => <option key={element.name}>{element.name}</option>)}
+      </select><br />
       <label>Kirjeldus</label> <br />
       <input ref={descriptionRef} defaultValue={productFound.description} type="text" /> <br />
       <label>Aktiivne</label> <br />

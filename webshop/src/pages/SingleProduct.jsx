@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-// import productsFromFile from '../data/products.json';
+import config from '../data/config.json';
 import { useTranslation } from 'react-i18next';
 
 function SingleProduct() {
@@ -9,10 +9,8 @@ function SingleProduct() {
     const productClicked = dbProducts.find(element => element.id === Number(id));
     const { t } = useTranslation();
 
-    const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
-
     useEffect(() => {
-        fetch(dbUrl)
+        fetch(config.productsDbUrl)
         .then(res => res.json())
         .then(json => setDbProducts(json));
     }, []);

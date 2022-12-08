@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
-// import productsFromFile from '../../data/products.json';
+import config from '../../data/config.json';
 import { ToastContainer, toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
@@ -18,10 +18,14 @@ function AddProduct() {
     const [idUnique, setIdUnique] = useState(true);
 
     const [dbProducts, setDbProducts] = useState([]);
-    const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
+    const [categories, setCategories] = useState([]);
   
     useEffect(() => {
-      fetch(dbUrl)
+      fetch(config.categoriesDbUrl)
+        .then(res => res.json())
+        .then(json => setCategories(json));
+
+      fetch(config.productsDbUrl)
         .then(res => res.json())
         .then(json => setDbProducts(json));
     }, []);
@@ -72,7 +76,7 @@ function AddProduct() {
         });
 
         dbProducts.push(newProduct);
-        fetch(dbUrl, 
+        fetch(config.productsDbUrl, 
           {
             "method": "PUT", 
             "body": JSON.stringify(dbProducts)
@@ -105,7 +109,10 @@ function AddProduct() {
             <input ref={imageRef} type="text" />
             <br /><br />
             <label>{t("product_category")}</label><br />
-            <input ref={categoryRef} type="text" />
+            {/* <input ref={categoryRef} type="text" /> */}
+            <select ref={categoryRef}>
+              {categories.map(element => <option key={element.name}>{element.name}</option>)}
+            </select>
             <br /><br />
             <label>{t("product_description")}</label><br />
             <input ref={descriptionRef} type="text" />

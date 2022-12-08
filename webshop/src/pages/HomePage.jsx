@@ -1,4 +1,4 @@
-// import productsFromFile from "../data/products.json";
+import config from "../data/config.json";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from "react";
@@ -9,10 +9,9 @@ function HomePage() {
   const { t } = useTranslation();
   const [products, changeProducts] = useState([]); // mida näidatakse välja
   const [dbProducts, setDbProducts] = useState([]); // originaalsed andmebaasi tooted, mida ma ei muuda kunagi
-  const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
 
   useEffect(() => {
-    fetch(dbUrl)
+    fetch(config.productsDbUrl)
       .then(res => res.json())
       .then(json => {
         changeProducts(json);
@@ -90,7 +89,7 @@ function HomePage() {
       {/* <button>motorcycles</button>
       <button>motors</button> */}
       {products.map(element => 
-        <div>
+        <div key={element.id}>
           <Link to={"/product/" + element.id}>
             <img src={element.image} width="200px" alt={element.name} />
           </Link>
@@ -105,6 +104,7 @@ function HomePage() {
 export default HomePage;
 
 // Email saatmine++++++
+// Dark-mode+++++
 
 // Neljapäev:
 // Kaardirakendus, kus on kõik poed peal
@@ -116,23 +116,28 @@ export default HomePage;
 
 // Neljapäev:
 // Kategooriad üles Firebase-i ja Poed Firebase-i
-// Dünaamiline CSS        className={ true ? "see-class-true-korral" : "false-korral-css" }
 // Makse -> API päringud
 
-// Dark-mode
-
+// 13.12 Teisipäev:
+// Dünaamiline CSS        className={ true ? "see-class-true-korral" : "false-korral-css" }
 // Props -> väljatõstmised
+// Nortali proovitöö (katab koos tehtud teemasid)
 
+// 15.12 Neljapäev
 // Globaalne muutuja: ülemises menüüs Ostukorvi kogusumma
 // Globaalne muutuja: sisselogimine/registreerumine
 
-// Nortali proovitöö (katab koos tehtud teemasid)
+// 20.12 
+// Sisselogimine/Registreerumine + URL-de kaitsmised
 
-// Piltide üleslaadimine (praegu on URL-na) - Firebase-i
-// Karusell-galerii
+// Ei tee:
 // Wordpress backendina ja React frontendina
 // Kujundus???
 
+// 29.12    13.00-14.30   ---> 13.00-15.15    2ak/h ---> 3ak/h
 // Lõpuprojekt: Nõue, et oleks tehtud Reactis.
 // Võib olla täiesti tavaline HTML ja CSS Reactis (nt enda portfoolio leht)
 // Võib olla ka Youtube-st või Udemyst mõne õpetuse järgi tehtud projekt
+// 45min:
+// Piltide üleslaadimine (praegu on URL-na) - Firebase-i
+// Karusell-galerii

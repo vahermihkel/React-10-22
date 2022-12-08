@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-// import productsFromFile from "../../data/products.json";
+import config from "../../data/config.json";
 import { ToastContainer, toast } from 'react-toastify';
 
 function MaintainProducts() {
   const [products, setProducts] = useState([]);
   const searchedProduct = useRef();
   const [dbProducts, setDbProducts] = useState([]); // originaalsed andmebaasi tooted, mida ma ei muuda kunagi
-  const dbUrl = "https://react-mihkel-webshop-10-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
 
   useEffect(() => {
-    fetch(dbUrl)
+    fetch(config.productsDbUrl)
       .then(res => res.json())
       .then(json => {
         setProducts(json);
@@ -24,7 +23,7 @@ function MaintainProducts() {
     const index = products.findIndex(element => element.id === product.id);
     products.splice(index,1); // 10 toodet 0,1,2,3,4,5,6,7,8,9
     setProducts(products.slice());
-    fetch(dbUrl, 
+    fetch(config.productsDbUrl, 
       {
         "method": "PUT", 
         "body": JSON.stringify(dbProducts)

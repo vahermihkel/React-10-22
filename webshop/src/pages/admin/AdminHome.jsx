@@ -13,6 +13,9 @@ function AdminHome() {
       <Link to="/admin/maintain-shops">
         <Button>Halda poode</Button>
       </Link>
+      <Link to="/admin/maintain-categories">
+        <Button>Halda kategooriaid</Button>
+      </Link>
     </div> );
 }
 
