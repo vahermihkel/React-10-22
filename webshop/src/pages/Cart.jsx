@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Payment from "../components/Payment";
 import "../css/Cart.css";
 
 function Cart() {
@@ -44,32 +45,6 @@ function Cart() {
     return sum.toFixed(2);
   };
 
-  const pay = () => {
-    const paymentUrl = "https://igw-demo.every-pay.com/api/v4/payments/oneoff";
-
-    const paymentData = {
-      "api_username": "92ddcfab96e34a5f",
-      "account_name": "EUR3D1",
-      "amount": calculateCartSum(),
-      "order_reference": Math.random()*9999999,
-      "nonce": "a9b7f7eaasd" + Math.random()*9999999 + new Date(),
-      "timestamp": new Date(),
-      "customer_url": "https://react-mihkel-10-22.web.app"
-      };
-
-    const headersData = {
-      "Authorization": "Basic OTJkZGNmYWI5NmUzNGE1Zjo4Y2QxOWU5OWU5YzJjMjA4ZWU1NjNhYmY3ZDBlNGRhZA==",
-      "Content-Type": "application/json"
-    };
-
-    fetch(paymentUrl, {
-      "method": "POST", 
-      "body": JSON.stringify(paymentData), 
-      "headers": headersData
-    }).then(res => res.json())
-    .then(json => window.location.href = json.payment_link)
-  }
-
   return ( 
     <div>
         <div className="cart-top">
@@ -107,7 +82,7 @@ function Cart() {
             .map(element => <option key={element.NAME}>{element.NAME}</option>) }
         </select>
 
-        <button onClick={pay}>Maksma</button>
+        <Payment sum={calculateCartSum()} />
         
         </div>
     </div> );

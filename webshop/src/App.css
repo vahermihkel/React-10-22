@@ -15,3 +15,8 @@
 .map {
   height: 300px;
 }
+
+.selected {
+  font-weight: bold;
+  text-decoration: underline;
+}

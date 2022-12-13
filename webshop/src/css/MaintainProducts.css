@@ -1,0 +1,11 @@
+.active {
+  border: 1px solid green; /* paksus, liik, värvus */
+  margin: 5px;
+  background-color: rgb(238, 255, 238);
+}
+
+.inactive {
+  border: 1px solid red; /* paksus, liik, värvus */
+  margin: 5px;
+  background-color: rgb(255, 239, 239);
+}

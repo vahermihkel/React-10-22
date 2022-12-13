@@ -66,16 +66,19 @@ function HomePage() {
     changeProducts(products.slice());
   }
 
-  const filterByCategory = (i) => {
-    const outcome = dbProducts.filter(element => element.category === i);
+  const filterByCategory = (categoryClicked) => {
+    const outcome = dbProducts.filter(element => element.category === categoryClicked);
 
-    // const outcome = productsFromFile.filter(element => element.category.match (i));
-    // const outcome = productsFromFile.filter(element => element.category.includes (i));
+    // const outcome = productsFromFile.filter(element => element.category.match (categoryClicked));
+    // const outcome = productsFromFile.filter(element => element.category.includes (categoryClicked));
     changeProducts(outcome);
     // return
+    setSelectedCategory(categoryClicked);
   };
 
   const categories = [...new Set (dbProducts.map(element => element.category))];
+
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   return ( 
     <div>
@@ -85,7 +88,11 @@ function HomePage() {
       <button onClick={sortPriceDesc}>Sorteeri hind kahanevalt</button>
       <div>{products.length}</div>
       {/* kategooriad peavad siia tulema dünaamiliselt (.map() abil) */}
-      { categories.map((element, i) => <button key={i} onClick={() => filterByCategory (element)} >{t(element)}</button>) }
+      { categories.map((element, i) => 
+          <button className={ element === selectedCategory ? "selected" : undefined} key={i} onClick={() => filterByCategory (element)} >
+            {t(element)}
+          </button>
+        ) }
       {/* <button>motorcycles</button>
       <button>motors</button> */}
       {products.map(element => 
@@ -121,10 +128,10 @@ export default HomePage;
 // 13.12 Teisipäev:
 // Dünaamiline CSS        className={ true ? "see-class-true-korral" : "false-korral-css" }
 // Props -> väljatõstmised
-// Nortali proovitöö (katab koos tehtud teemasid)
+// Globaalne muutuja: ülemises menüüs Ostukorvi kogusumma
 
 // 15.12 Neljapäev
-// Globaalne muutuja: ülemises menüüs Ostukorvi kogusumma
+// Nortali proovitöö (katab koos tehtud teemasid)
 // Globaalne muutuja: sisselogimine/registreerumine
 
 // 20.12 
