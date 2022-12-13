@@ -1,14 +1,16 @@
 import config from "../data/config.json";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from "react-router-dom";
+import CartSumContext from "../store/CartSumContext";
 
 function HomePage() {
   const { t } = useTranslation();
   const [products, changeProducts] = useState([]); // mida näidatakse välja
   const [dbProducts, setDbProducts] = useState([]); // originaalsed andmebaasi tooted, mida ma ei muuda kunagi
+  const cartSumCtx = useContext(CartSumContext);
 
   useEffect(() => {
     fetch(config.productsDbUrl)
@@ -38,6 +40,11 @@ function HomePage() {
     } else {
       cartLS.push({"product": productClicked, "quantity": 1});
     }
+
+    let sum = 0;
+    cartLS.forEach(element => sum = sum + element.product.price * element.quantity);
+    cartSumCtx.setCartSum(sum.toFixed(2));
+
     cartLS = JSON.stringify(cartLS);
     sessionStorage.setItem("cart", cartLS);
     toast.success(t("added-to-cart"), {

@@ -11,7 +11,7 @@ function Payment(props) {
       "order_reference": Math.random()*9999999,
       "nonce": "a9b7f7eaasd" + Math.random()*9999999 + new Date(),
       "timestamp": new Date(),
-      "customer_url": "https://xxxxxxxxxxx.app"
+      "customer_url": "https://react-mihkel-10-22.web.app"
       };
 
     const headersData = {

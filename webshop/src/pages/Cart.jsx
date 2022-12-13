@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
 import Payment from "../components/Payment";
 import "../css/Cart.css";
+import { useContext, useEffect, useState } from "react";
+import CartSumContext from "../store/CartSumContext";
 
 function Cart() {
   const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem("cart")) || []);
   const [parcelMachines, setParcelMachines] = useState([]);
+  const cartSumCtx = useContext(CartSumContext);
 
   useEffect(() => { // useEffect tuleb panna siis, kui lehele tulles tehakse koheselt API päring fetch() abil
     fetch("https://www.omniva.ee/locations.json")   // API päring võtab aega 0.1s - 2s
@@ -15,6 +17,7 @@ function Cart() {
   const emptyCart = () => {
     setCart([]);
     sessionStorage.setItem("cart", JSON.stringify([]));
+    cartSumCtx.setCartSum(0);
   };
 
   const decreaseQuantity = (index) => {
@@ -24,6 +27,7 @@ function Cart() {
     }
     setCart(cart.slice());
     sessionStorage.setItem("cart", JSON.stringify(cart)); 
+    cartSumCtx.setCartSum(calculateCartSum());
   }
 
   const increaseQuantity = (index) => {
@@ -31,12 +35,14 @@ function Cart() {
     cart[index].quantity = cart[index].quantity + 1;
     setCart(cart.slice()); // HTML uuendus
     sessionStorage.setItem("cart", JSON.stringify(cart)); // sessionStorage uuendus
+    cartSumCtx.setCartSum(calculateCartSum());
   }
 
   const removeFromCart = (index) => {
     cart.splice(index, 1);
     setCart(cart.slice()); // HTML uuendus
     sessionStorage.setItem("cart", JSON.stringify(cart)); // SessionStorage uuendus
+    cartSumCtx.setCartSum(calculateCartSum());
   };
 
   const calculateCartSum = () => {
@@ -73,19 +79,26 @@ function Cart() {
             </div>
           )}
         </div>
+        { cart.length > 0 && 
         <div className="cart-bottom">
-          { cart.length > 0 && <div>Estimated total price {calculateCartSum()} €</div>}
+          <div>Estimated total price {calculateCartSum()} €</div>
         
-        <select>
-          { parcelMachines
-            .filter(element => element.A0_NAME === "EE")
-            .map(element => <option key={element.NAME}>{element.NAME}</option>) }
-        </select>
+          <select>
+            { parcelMachines
+              .filter(element => element.A0_NAME === "EE")
+              .map(element => <option key={element.NAME}>{element.NAME}</option>) }
+          </select>
 
-        <Payment sum={calculateCartSum()} />
+          <Payment sum={calculateCartSum()} />
         
-        </div>
+        </div>}
     </div> );
 }
 
 export default Cart;
+
+// ei lase ühtegi faili üle 200 rea
+// meil on pandud plugin, mis viskab warningu kui on üle 200
+// lahendus: teeme uue faili kuhu tõstame koodijupid
+
+// ideaalis hakkame selle peale mõtlema juba üle 150 rea
