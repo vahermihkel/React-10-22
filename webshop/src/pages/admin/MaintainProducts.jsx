@@ -41,7 +41,9 @@ function MaintainProducts() {
   }
 
   const searchFromProducts = () => {
-    const result = dbProducts.filter(element => element.name.includes(searchedProduct.current.value));
+    const result = dbProducts.filter(element => 
+      element.name.toLowerCase().includes(searchedProduct.current.value.toLowerCase())
+      );
     setProducts(result);
   }
 

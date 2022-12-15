@@ -138,20 +138,21 @@ export default HomePage;
 // Globaalne muutuja: ülemises menüüs Ostukorvi kogusumma
 
 // 15.12 Neljapäev
-// Nortali proovitöö (katab koos tehtud teemasid)
 // Globaalne muutuja: sisselogimine/registreerumine
-
-// 20.12 
 // Sisselogimine/Registreerumine + URL-de kaitsmised
+
+// 23.12 Reede  10.00-13.15 
+// Nortali proovitöö (katab koos tehtud teemasid)
+// Piltide üleslaadimine (praegu on URL-na) - Firebase-i
+// Karusell-galerii
 
 // Ei tee:
 // Wordpress backendina ja React frontendina
 // Kujundus???
 
-// 29.12    13.00-14.30   ---> 13.00-15.15    2ak/h ---> 3ak/h
+// 06.01   13.00-15.15    2ak/h ---> 3ak/h
 // Lõpuprojekt: Nõue, et oleks tehtud Reactis.
 // Võib olla täiesti tavaline HTML ja CSS Reactis (nt enda portfoolio leht)
 // Võib olla ka Youtube-st või Udemyst mõne õpetuse järgi tehtud projekt
-// 45min:
-// Piltide üleslaadimine (praegu on URL-na) - Firebase-i
-// Karusell-galerii
+
+// 45min: kujundus, otsing ka ID järgi või kirjelduse seest

@@ -39,6 +39,10 @@ function AddProduct() {
           toast.error("Nimi ei ole täidetud");
           return; // funktsioonist ära enam edasi mine
         }
+        if (/^[A-ZÜÕÖÄ].*/.test(nameRef.current.value) === false) {
+          toast.error("Nimi ei hakka suure algustähega");
+          return; // funktsioonist ära enam edasi mine
+        }
         if (priceRef.current.value === "") {
           toast.error("Hind ei ole täidetud");
           return; // funktsioonist ära enam edasi mine
@@ -49,10 +53,6 @@ function AddProduct() {
         }
         if (/^\S*$/.test(imageRef.current.value) === false) {
           toast.error("Pildi aadressile ei saa sisestada tühikuid");
-          return; // funktsioonist ära enam edasi mine
-        }
-        if (categoryRef.current.value === "") {
-          toast.error("Kategooria ei ole täidetud");
           return; // funktsioonist ära enam edasi mine
         }
         if (descriptionRef.current.value === "") {
