@@ -1,5 +1,5 @@
 .active {
-  border: 1px solid green; /* paksus, liik, värvus */
+  border: 1px solid green; 
   margin: 5px;
   background-color: rgb(238, 255, 238);
 }

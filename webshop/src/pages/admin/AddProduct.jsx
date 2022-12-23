@@ -4,6 +4,9 @@ import Button from "react-bootstrap/Button";
 import config from '../../data/config.json';
 import { ToastContainer, toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import FileUpload from "../../components/FileUpload";
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
 function AddProduct() {
     const idRef = useRef();
@@ -47,14 +50,14 @@ function AddProduct() {
           toast.error("Hind ei ole täidetud");
           return; // funktsioonist ära enam edasi mine
         }
-        if (imageRef.current.value === "") {
-          toast.error("Pilt ei ole täidetud");
-          return; // funktsioonist ära enam edasi mine
-        }
-        if (/^\S*$/.test(imageRef.current.value) === false) {
-          toast.error("Pildi aadressile ei saa sisestada tühikuid");
-          return; // funktsioonist ära enam edasi mine
-        }
+        // if (imageRef.current.value === "") {
+        //   toast.error("Pilt ei ole täidetud");
+        //   return; // funktsioonist ära enam edasi mine
+        // }
+        // if (/^\S*$/.test(imageRef.current.value) === false) {
+        //   toast.error("Pildi aadressile ei saa sisestada tühikuid");
+        //   return; // funktsioonist ära enam edasi mine
+        // }
         if (descriptionRef.current.value === "") {
           toast.error("Kirjeldus ei ole täidetud");
           return; // funktsioonist ära enam edasi mine
@@ -64,7 +67,7 @@ function AddProduct() {
             "id": Number(idRef.current.value),
             "name": nameRef.current.value,
             "price": Number(priceRef.current.value),
-            "image": imageRef.current.value,
+            "image": isUrlSelected === true ? imageRef.current.value : imageUrl,
             "category": categoryRef.current.value,
             "description": descriptionRef.current.value,
             "active": activeRef.current.checked
@@ -93,6 +96,9 @@ function AddProduct() {
     }
   }
 
+  const [imageUrl, setImageUrl] = useState("");
+  const [isUrlSelected, setUrlSelected] = useState(true);
+
     return ( 
         <div>
             { idUnique === false  && <div>Sisestatud ID on mõne teisega tootega sama!</div>}
@@ -105,8 +111,18 @@ function AddProduct() {
             <label>{t("product_price")}</label><br />
             <input ref={priceRef} type="number" />
             <br /><br />
+            <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
+              <ToggleButton id="tbg-radio-1" onClick={() => setUrlSelected(true)} value={1}>
+                URL
+              </ToggleButton>
+              <ToggleButton id="tbg-radio-2" onClick={() => setUrlSelected(false)} value={2}>
+                File
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <br />
             <label>{t("product_image")}</label><br />
-            <input ref={imageRef} type="text" />
+            {isUrlSelected === true && <input ref={imageRef} type="text" />}
+            {isUrlSelected === false && <FileUpload onSendPictureUrl={setImageUrl} />}
             <br /><br />
             <label>{t("product_category")}</label><br />
             {/* <input ref={categoryRef} type="text" /> */}

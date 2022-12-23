@@ -1,18 +1,13 @@
-import Payment from "../components/Payment";
+import Payment from "../components/cart/Payment";
 import "../css/Cart.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import CartSumContext from "../store/CartSumContext";
+import ParcelMachines from "../components/cart/ParcelMachines";
+import { Link } from "react-router-dom";
 
 function Cart() {
   const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem("cart")) || []);
-  const [parcelMachines, setParcelMachines] = useState([]);
   const cartSumCtx = useContext(CartSumContext);
-
-  useEffect(() => { // useEffect tuleb panna siis, kui lehele tulles tehakse koheselt API päring fetch() abil
-    fetch("https://www.omniva.ee/locations.json")   // API päring võtab aega 0.1s - 2s
-      .then(res => res.json())
-      .then(json => setParcelMachines(json));
-  }, []);
 
   const emptyCart = () => {
     setCart([]);
@@ -59,7 +54,7 @@ function Cart() {
           { cart.length === 1 && <div>You have 1 item in your cart.</div>}
         </div>
 
-        { cart.length === 0 && <div>Your cart is empty.</div>  }
+        { cart.length === 0 && <div>Your cart is empty.<Link to="/">Add products</Link></div>  }
         { cart.length === 0 && <img className="emptyCart" src="/empty-cart.png" alt="" />}
 
         <div>
@@ -83,11 +78,7 @@ function Cart() {
         <div className="cart-bottom">
           <div>Estimated total price {calculateCartSum()} €</div>
         
-          <select>
-            { parcelMachines
-              .filter(element => element.A0_NAME === "EE")
-              .map(element => <option key={element.NAME}>{element.NAME}</option>) }
-          </select>
+          <ParcelMachines />
 
           <Payment sum={calculateCartSum()} />
         

@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import config from "../../data/config.json";
 import { ToastContainer, toast } from 'react-toastify';
-import "../../css/MaintainProducts.css";
+import styles from "../../css/MaintainProducts.module.css";
 // ilus oleks moodulina, sest praegu on MaintainProducts.css
-//  kehtiv kõikides failides
+// import "../../css/MaintainProducts.css";  kehtiv kõikides failides
 // import styles from "../../css/MaintainProducts.css";
+//  kui impordin moodulina, pean võtma muutujana kasutusele
 
 function MaintainProducts() {
   const [products, setProducts] = useState([]);
@@ -63,7 +64,7 @@ function MaintainProducts() {
       <input ref={searchedProduct} onChange={searchFromProducts} type="text" />
       <div>{products.length} tk</div>
       {products.map((element) => 
-        <div className={element.active === true ? "active" : "inactive"} key={element.id}>
+        <div className={element.active === true ? styles.active : styles.inactive} key={element.id}>
           <div onClick={() => changeActive(element)}>
             <img src={element.image} alt="" />
             <div>{element.id}</div>
